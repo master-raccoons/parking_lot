@@ -11,6 +11,17 @@ public class ParkingPlace {
 	private ParkingType type;
 	private Position position;
     private int floorNo;
+    private float parkingTime;
+
+	public float getParkingTime() {
+
+		return parkingTime;
+	}
+
+	public void setParkingTime(float parkingTime) {
+
+		this.parkingTime = parkingTime;
+	}
 
 	public int getFloorNo() {
 

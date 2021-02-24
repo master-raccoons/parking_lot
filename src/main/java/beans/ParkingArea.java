@@ -45,15 +45,16 @@ public class ParkingArea {
 
 	  }
 
-	public ParkingPlace unparkVehicle(String vehicleNumber) throws Exception
+	public ParkingPlace unparkVehicle(String vehicleNumber,float parkingTime) throws Exception
 	{
 		if(isVehicleParked(vehicleNumber))
 		{
            ParkingPlace parkingPlace=this.parkingPlaceRecord.get(vehicleNumber);
            ParkingFloor parkingFloor=this.parkingFloors[parkingPlace.getFloorNo()];
-		   parkingFloor.freeSpot(parkingPlace);
+		   parkingPlace.setParkingTime(parkingTime);
+           parkingFloor.freeSpot(parkingPlace);
            Vehicle vehicle=parkingPlace.getVehicle();
-           System.out.println("Registration number"+ vehicleNumber+" with Slot Number"+vehicle.ticket.getTicketNo() +" is free with Charge"+ vehicle.ticket.getPaidAmount() );
+           System.out.println("Registration number"+ vehicleNumber+" with Slot Number"+vehicle.getTicket().getTicketNo() +" is free with Charge"+ vehicle.getTicket().getPaidAmount() );
 		   return parkingPlace;
 		}
        throw new Exception("Vehicle with the number "+vehicleNumber+" is not parked here");

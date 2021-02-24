@@ -3,6 +3,9 @@ package beans;
 import constants.ParkingType;
 import constants.VehicleType;
 import javafx.geometry.Pos;
+import services.FareCalculate;
+
+import java.util.Date;
 
 public class ParkingFloor {
 
@@ -26,7 +29,8 @@ public class ParkingFloor {
 		switch (parkingPlace.getType()) {
 			case COMPACT:
 			    Position pos=findNearestParkingSpace();
-                Vehicle vehicle=new Car(parkingPlace.getNumber(), VehicleType.CAR,null);
+			    String slotNumber=parkingPlace.getFloorNo()+"F-"+pos.getRow()+""+pos.getCol();
+                Vehicle vehicle=new Car(parkingPlace.getNumber(), VehicleType.CAR,new Ticket(slotNumber));
 				break;
 
 				case LARGE:
@@ -59,7 +63,10 @@ public class ParkingFloor {
 	public void freeSpot(ParkingPlace parkingPlace)
 	{
         this.parkingPlaces[parkingPlace.getPosition().getRow()][parkingPlace.getPosition().getCol()]=null;
-		occupiedParking--;
+		double charge= FareCalculate.calculateFare(parkingPlace.getParkingTime());
+		parkingPlace.getVehicle().getTicket().setPaidAmount(charge);
+		parkingPlace.getVehicle().getTicket().setUnparkedAt(new Date());
+        occupiedParking--;
 	}
 
 
