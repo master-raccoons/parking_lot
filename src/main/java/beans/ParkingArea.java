@@ -10,7 +10,7 @@ public class ParkingArea {
 
 	private ParkingFloor[] parkingFloors;
     private final HashMap<String,ParkingPlace> parkingPlaceRecord;
-	ParkingArea()
+	public ParkingArea()
 	{
 		parkingFloors=new ParkingFloor[ParkingConstants.NO_OF_FLOORS];
 		parkingPlaceRecord=new HashMap<>();
