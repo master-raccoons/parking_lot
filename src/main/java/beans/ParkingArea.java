@@ -26,6 +26,7 @@ public class ParkingArea {
    	   ParkingPlace parkingPlace=new ParkingPlace();
 	   parkingPlace.setNumber(number);
 	   parkingPlace.setType(ParkingType.COMPACT);
+	   parkingPlace.setFloorNo(floor.floorNo);
 	   floor.addParkingPlace(parkingPlace);
 	   if(!parkingPlace.isFree())
 	   {
@@ -44,7 +45,19 @@ public class ParkingArea {
 
 	  }
 
-
+	public ParkingPlace unparkVehicle(String vehicleNumber) throws Exception
+	{
+		if(isVehicleParked(vehicleNumber))
+		{
+           ParkingPlace parkingPlace=this.parkingPlaceRecord.get(vehicleNumber);
+           ParkingFloor parkingFloor=this.parkingFloors[parkingPlace.getFloorNo()];
+		   parkingFloor.freeSpot(parkingPlace);
+           Vehicle vehicle=parkingPlace.getVehicle();
+           System.out.println("Registration number"+ vehicleNumber+" with Slot Number"+vehicle.ticket.getTicketNo() +" is free with Charge"+ vehicle.ticket.getPaidAmount() );
+		   return parkingPlace;
+		}
+       throw new Exception("Vehicle with the number "+vehicleNumber+" is not parked here");
+	}
 
 
 }

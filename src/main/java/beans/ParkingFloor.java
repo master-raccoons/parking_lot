@@ -1,16 +1,23 @@
 package beans;
 
 import constants.ParkingType;
+import constants.VehicleType;
+import javafx.geometry.Pos;
 
 public class ParkingFloor {
 
 	String floorName;
+	final int floorNo;
 	private final ParkingPlace[][] parkingPlaces;
     private final int totalParkingSpace;
     private int occupiedParking;
-	ParkingFloor(String floorName, int nowOfRows, int noOfCols) {
+
+
+
+	ParkingFloor(String floorName, int nowOfRows, int noOfCols,int floorNo) {
 		this.floorName = floorName;
 		this.parkingPlaces = new ParkingPlace[nowOfRows][noOfCols];
+		this.floorNo=floorNo;
 		totalParkingSpace=noOfCols*nowOfRows;
 	}
 
@@ -18,8 +25,8 @@ public class ParkingFloor {
 
 		switch (parkingPlace.getType()) {
 			case COMPACT:
-			    findNearestParkingSpace();
-
+			    Position pos=findNearestParkingSpace();
+                Vehicle vehicle=new Car(parkingPlace.getNumber(), VehicleType.CAR,null);
 				break;
 
 				case LARGE:

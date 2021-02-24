@@ -10,6 +10,17 @@ public class ParkingPlace {
 	private Vehicle vehicle;
 	private ParkingType type;
 	private Position position;
+    private int floorNo;
+
+	public int getFloorNo() {
+
+		return floorNo;
+	}
+
+	public void setFloorNo(int floorNo) {
+
+		this.floorNo = floorNo;
+	}
 
 	public void setNumber(String number) {
 
