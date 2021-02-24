@@ -22,19 +22,20 @@ public class ParkingArea {
    	   {
    	   	   throw new Exception("Duplicate "+number+" found!!!");
        }
-   	   ParkingFloor floor=null;
+   	   ParkingFloor floor=new ParkingFloor("F 1",15,15,0);
+	   parkingFloors[0]=floor;
    	   ParkingPlace parkingPlace=new ParkingPlace();
 	   parkingPlace.setNumber(number);
 	   parkingPlace.setType(ParkingType.COMPACT);
 	   parkingPlace.setFloorNo(floor.floorNo);
-	   floor.addParkingPlace(parkingPlace);
 	   if(!parkingPlace.isFree())
 	   {
 		    synchronized (parkingPlaceRecord)
 		   {
+			   floor.addParkingPlace(parkingPlace);
 			   parkingPlaceRecord.put(number,parkingPlace);
 		   }
-
+		   System.out.println("Registration number "+number+" Allocated slot number: "+parkingPlace.getVehicle().getTicket().getTicketNo());
 	   }
        return parkingPlace;
    }
@@ -53,6 +54,7 @@ public class ParkingArea {
            ParkingFloor parkingFloor=this.parkingFloors[parkingPlace.getFloorNo()];
 		   parkingPlace.setParkingTime(parkingTime);
            parkingFloor.freeSpot(parkingPlace);
+			this.parkingPlaceRecord.remove(vehicleNumber);
            Vehicle vehicle=parkingPlace.getVehicle();
            System.out.println("Registration number"+ vehicleNumber+" with Slot Number"+vehicle.getTicket().getTicketNo() +" is free with Charge"+ vehicle.getTicket().getPaidAmount() );
 		   return parkingPlace;

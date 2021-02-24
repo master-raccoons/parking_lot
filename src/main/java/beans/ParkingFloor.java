@@ -14,7 +14,7 @@ public class ParkingFloor {
 	private final ParkingPlace[][] parkingPlaces;
     private final int totalParkingSpace;
     private int occupiedParking;
-
+	static int  index=0;
 
 
 	ParkingFloor(String floorName, int nowOfRows, int noOfCols,int floorNo) {
@@ -31,7 +31,9 @@ public class ParkingFloor {
 			    Position pos=findNearestParkingSpace();
 			    String slotNumber=parkingPlace.getFloorNo()+"F-"+pos.getRow()+""+pos.getCol();
                 Vehicle vehicle=new Car(parkingPlace.getNumber(), VehicleType.CAR,new Ticket(slotNumber));
-				break;
+				parkingPlace.setVehicle(vehicle);
+				placeVehicle(pos,parkingPlace);
+                break;
 
 				case LARGE:
 				break;
@@ -48,7 +50,7 @@ public class ParkingFloor {
          	//findNearestparking
          }
 
-		return new Position(0,0);
+		return new Position(index++,0);
 	}
 
 	public void placeVehicle(Position position, ParkingPlace parkingPlace)
