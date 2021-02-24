@@ -1,6 +1,8 @@
 package beans;
 
 import constants.ParkingConstants;
+import constants.ParkingType;
+import constants.VehicleType;
 
 import java.util.HashMap;
 
@@ -14,14 +16,35 @@ public class ParkingArea {
 		parkingPlaceRecord=new HashMap<>();
 	}
 
-   public ParkingPlace placeVehile()
+   public ParkingPlace parkVehicle(String number) throws Exception
    {
+   	   if(isVehicleParked(number))
+   	   {
+   	   	   throw new Exception("Duplicate "+number+" found!!!");
+       }
    	   ParkingFloor floor=null;
    	   ParkingPlace parkingPlace=new ParkingPlace();
-	   parkingPlace.s
-   	   ParkingPlace floor.addParkingPlace();
+	   parkingPlace.setNumber(number);
+	   parkingPlace.setType(ParkingType.COMPACT);
+	   floor.addParkingPlace(parkingPlace);
+	   if(!parkingPlace.isFree())
+	   {
+		    synchronized (parkingPlaceRecord)
+		   {
+			   parkingPlaceRecord.put(number,parkingPlace);
+		   }
 
+	   }
+       return parkingPlace;
    }
+
+	  private boolean isVehicleParked(String vehicleNumber)
+	  {
+	      return parkingPlaceRecord.containsKey(vehicleNumber)  ?true:false;
+
+	  }
+
+
 
 
 }

@@ -3,13 +3,13 @@ package beans;
 import constants.VehicleType;
 
 public abstract class Vehicle {
-	private String licenseNumber;
+	private String vehicleNumber;
 	private  VehicleType type;
 	Ticket ticket;
 
-	public Vehicle(String licenseNumber, VehicleType type, Ticket ticket) {
+	public Vehicle(String vehicleNumber, VehicleType type, Ticket ticket) {
 
-		this.licenseNumber = licenseNumber;
+		this.vehicleNumber = vehicleNumber;
 		this.type = type;
 		this.ticket = ticket;
 	}
