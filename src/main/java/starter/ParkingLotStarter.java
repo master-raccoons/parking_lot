@@ -1,14 +1,12 @@
 package starter;
 
-import beans.ParkingArea;
+import config.ParkingArea;
 import beans.ParkingEntrance;
 import beans.Position;
+import factory.OperationsFactory;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class ParkingLotStarter
 {
@@ -43,36 +41,13 @@ public class ParkingLotStarter
 			entrance.setPosition(new Position(0,0));
 			entrance.setFree(false);
 			parkingArea.getParkingFloors()[0].getParkingSpaces()[0][0]=entrance;
-		    for(String cmnd:cmnds)
-		                        {
-		                        	if(cmnd.startsWith("park"))
-		                        	{
-				                        try {
-					                        parkingArea.parkVehicle(cmnd.split(" ")[1]);
-				                        } catch (Exception exception) {
-					                        exception.printStackTrace();
-				                        }
-
-			                        }
-			                        else if(cmnd.startsWith("leave"))
-			                        {
-				                        try {
-					                        parkingArea.unparkVehicle(cmnd.split(" ")[1],Float.valueOf(cmnd.split(" ")[2]));
-				                        } catch (Exception exception) {
-					                        exception.printStackTrace();
-				                        }
-			                        }
-			                        else if(cmnd.startsWith("status"))
-			                        {
-				                        try {
-					                        parkingArea.ShowStatus();
-				                        } catch (Exception exception) {
-					                        exception.printStackTrace();
-				                        }
-			                        }
-
-
-		                        };
+			cmnds.stream().forEach(input-> {
+				try {
+					OperationsFactory.getParkingOperation(input,parkingArea).execute();
+				} catch (Exception exception) {
+					exception.printStackTrace();
+				}
+			});
 
 		}
 		catch(Exception ex)

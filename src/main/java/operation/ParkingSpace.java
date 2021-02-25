@@ -1,4 +1,4 @@
-package interfaces;
+package operation;
 /*
 This interface has a special mechanism which will let us know what is type of the parking place
 

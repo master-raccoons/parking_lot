@@ -1,7 +1,13 @@
-package beans;
+package helper;
 
+import beans.Car;
+import beans.ParkingEntrance;
+import beans.ParkingPlace;
+import beans.Position;
+import beans.Ticket;
+import beans.Vehicle;
 import constants.VehicleType;
-import interfaces.ParkingSpace;
+import operation.ParkingSpace;
 import services.ParkingChargeCalculate;
 
 import java.util.Date;
@@ -58,7 +64,7 @@ public class ParkingFloor {
 		this.occupiedParking = occupiedParking;
 	}
 
-	ParkingFloor(String floorName, int nowOfRows, int noOfCols, int floorNo) {
+	public  ParkingFloor(String floorName, int nowOfRows, int noOfCols, int floorNo) {
 		this.floorName = floorName;
 		this.parkingSpaces = new ParkingSpace[nowOfRows][noOfCols];
 		this.floorNo=floorNo;
@@ -83,7 +89,7 @@ public class ParkingFloor {
 		switch (parkingPlace.getType()) {
 			case COMPACT:
 			    String slotNumber=parkingPlace.getFloorNo()+"F-"+parkingPlace.getPosition().getRow()+""+parkingPlace.getPosition().getCol();
-                Vehicle vehicle=new Car(parkingPlace.getNumber(), VehicleType.CAR,new Ticket(slotNumber));
+                Vehicle vehicle=new Car(parkingPlace.getNumber(), VehicleType.CAR, new Ticket(slotNumber));
 				parkingPlace.setVehicle(vehicle);
 				placeVehicle(parkingPlace);
                 break;

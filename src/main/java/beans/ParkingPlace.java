@@ -1,7 +1,7 @@
 package beans;
 
 import constants.ParkingType;
-import interfaces.ParkingSpace;
+import operation.ParkingSpace;
 
 public class ParkingPlace extends ParkingSpace {
 

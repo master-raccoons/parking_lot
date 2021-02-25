@@ -9,7 +9,7 @@ public class Ticket {
 	private final String ticketNo;
 	private  String paidAtCounter;
 	private  double paidAmount;
-	Ticket(String ticketNo)
+	public Ticket(String ticketNo)
 	{
 		this.issueDate=new Date();
 		this.ticketNo=ticketNo;

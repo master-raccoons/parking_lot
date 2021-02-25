@@ -1,13 +1,17 @@
-package beans;
+package config;
 
+import beans.ParkingPlace;
+import beans.Vehicle;
 import constants.ParkingConstants;
 import constants.ParkingType;
+import helper.ParkingFloor;
+
 import java.util.HashMap;
 
 public class ParkingArea {
 
 	private ParkingFloor[] parkingFloors;
-    private final HashMap<String,ParkingPlace> parkingPlaceRecord;
+    private final HashMap<String, ParkingPlace> parkingPlaceRecord;
 	public ParkingArea()
 	{
 		parkingFloors=new ParkingFloor[ParkingConstants.NO_OF_FLOORS];
@@ -86,7 +90,7 @@ public class ParkingArea {
 		return parkingPlaceRecord;
 	}
 
-	public void ShowStatus()
+	public void showStatus()
 	{
 		System.out.println("Slot No.      Registration No");
 		for(int i=0;i<this.parkingFloors.length;i++)

@@ -1,6 +1,6 @@
 package beans;
 
-import interfaces.ParkingSpace;
+import operation.ParkingSpace;
 
 public class ParkingEntrance extends ParkingSpace {
 
