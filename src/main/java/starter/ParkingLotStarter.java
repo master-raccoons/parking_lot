@@ -35,6 +35,9 @@ public class ParkingLotStarter
 			cmnds.add("park KA-01-BB-0022");
 			cmnds.add("park KA-01-BB-0033");
 			cmnds.add("leave KA-01-BB-0033 2");
+			cmnds.add("leave KA-01-HH-9999 2");
+			cmnds.add("park KA-01-BB-0007");
+			cmnds.add("status");
 			ParkingEntrance entrance=new ParkingEntrance();
 			entrance.setPosition(new Position(0,0));
 			entrance.setFree(false);
@@ -58,6 +61,15 @@ public class ParkingLotStarter
 					                        exception.printStackTrace();
 				                        }
 			                        }
+			                        else if(cmnd.startsWith("status"))
+			                        {
+				                        try {
+					                        parkingArea.ShowStatus();
+				                        } catch (Exception exception) {
+					                        exception.printStackTrace();
+				                        }
+			                        }
+
 
 		                        };
 System.out.println("exiting the application!!!");

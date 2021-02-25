@@ -91,4 +91,14 @@ public class ParkingArea {
 
 		return parkingPlaceRecord;
 	}
+
+	public void ShowStatus()
+	{
+		for(int i=0;i<this.parkingFloors.length;i++)
+		{
+           ParkingFloor floor=this.parkingFloors[i];
+           floor.getFloorStatus();
+		}
+
+	}
 }

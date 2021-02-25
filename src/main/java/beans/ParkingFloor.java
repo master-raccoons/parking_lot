@@ -179,5 +179,20 @@ public class ParkingFloor {
         occupiedParking--;
 	}
 
+	public void getFloorStatus()
+	{
+		System.out.println("Slot No.      Registration No");
+		for (int i = 0, len = this.getParkingSpaces().length; i < len; i++)
+		{
+			for (int j = 0, len1 = this.getParkingSpaces()[0].length; j < len1; j++)
+			{
+				if(!this.getParkingSpaces()[i][j].isFree() && this.getParkingSpaces()[i][j] instanceof  ParkingPlace)
+				{
+					ParkingPlace parkingPlace=(ParkingPlace)this.getParkingSpaces()[i][j];
+					System.out.println(parkingPlace.getVehicle()+"  "+parkingPlace.getVehicle().getVehicleNumber());
+				}
+			}
+		}
 
+	}
 }
