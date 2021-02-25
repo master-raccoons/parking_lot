@@ -1,14 +1,14 @@
 package beans;
 
-import constants.ParkingType;
 import constants.VehicleType;
 import interfaces.ParkingSpace;
-import javafx.geometry.Pos;
-import services.FareCalculate;
+import services.ParkingChargeCalculate;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Set;
 
 public class ParkingFloor {
 
@@ -100,7 +100,7 @@ public class ParkingFloor {
 	{
          if(occupiedParking <totalParkingSpace)
          {
-	        Position position= findMinimumDistance();
+	         Position position= findMinimumDistance();
 	         ParkingPlace parkingPlace=(ParkingPlace)this.parkingSpaces[position.getRow()][position.getCol()];
 	         parkingPlace.setPosition(position);
 	         return parkingPlace;
@@ -115,7 +115,7 @@ public class ParkingFloor {
 		int dx[] = { 0,  -1,  0,  1  };
 		int dy[] = { 1,  0,  -1,  0 };
 		Queue<Position> queue = new LinkedList<>();
-
+        Set<String> set=new HashSet<>();
         Position entryPoint=null;
 		if(this.parkingSpaces[0][0]!=null && this.parkingSpaces[0][0] instanceof ParkingEntrance)
 		{
@@ -154,7 +154,10 @@ public class ParkingFloor {
 					pos= new Position(a, b);
                     break label;
 				}
-				queue.add(new Position(a, b));
+				if(!set.contains(a + "" + b)) {
+					set.add(a + "" + b);
+					queue.add(new Position(a, b));
+				}
 			}
 		}
 		return pos;
@@ -165,7 +168,7 @@ public class ParkingFloor {
 
 	public void placeVehicle( ParkingPlace parkingPlace)
 	{
-		       parkingPlace.setFree(false);
+		      parkingPlace.setFree(false);
 			  occupiedParking++;
 
 	}
@@ -173,15 +176,22 @@ public class ParkingFloor {
 	public void freeSpot(ParkingPlace parkingPlace)
 	{
         this.parkingSpaces[parkingPlace.getPosition().getRow()][parkingPlace.getPosition().getCol()].setFree(true);
-		double charge= FareCalculate.calculateFare(parkingPlace.getParkingTime());
+		double charge= ParkingChargeCalculate.calculateFare(parkingPlace.getParkingTime());
 		parkingPlace.getVehicle().getTicket().setPaidAmount(charge);
 		parkingPlace.getVehicle().getTicket().setUnparkedAt(new Date());
         occupiedParking--;
+		freeResources(parkingPlace);
+	}
+
+	private void freeResources(ParkingPlace parkingPlace)
+	{
+		parkingPlace.setVehicle(null);
+		parkingPlace.setParkingTime(0f);
 	}
 
 	public void getFloorStatus()
 	{
-		System.out.println("Slot No.      Registration No");
+
 		for (int i = 0, len = this.getParkingSpaces().length; i < len; i++)
 		{
 			for (int j = 0, len1 = this.getParkingSpaces()[0].length; j < len1; j++)
@@ -189,7 +199,7 @@ public class ParkingFloor {
 				if(!this.getParkingSpaces()[i][j].isFree() && this.getParkingSpaces()[i][j] instanceof  ParkingPlace)
 				{
 					ParkingPlace parkingPlace=(ParkingPlace)this.getParkingSpaces()[i][j];
-					System.out.println(parkingPlace.getVehicle()+"  "+parkingPlace.getVehicle().getVehicleNumber());
+					System.out.println(parkingPlace.getVehicle().getTicket().getTicketNo()+"  "+parkingPlace.getVehicle().getVehicleNumber());
 				}
 			}
 		}

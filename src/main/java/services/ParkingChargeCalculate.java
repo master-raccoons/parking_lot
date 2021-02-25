@@ -4,12 +4,12 @@ import beans.Ticket;
 import constants.CurrencyType;
 import constants.TicketConstants;
 
-public class FareCalculate {
+public class ParkingChargeCalculate {
 
 
 	private final CurrencyType currencyType;
 
-	FareCalculate()
+	ParkingChargeCalculate()
 	{
 		this.currencyType=CurrencyType.USD;
 	}

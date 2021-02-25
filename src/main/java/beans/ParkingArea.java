@@ -2,9 +2,6 @@ package beans;
 
 import constants.ParkingConstants;
 import constants.ParkingType;
-import constants.VehicleType;
-
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class ParkingArea {
@@ -25,7 +22,7 @@ public class ParkingArea {
 		}
 	}
 
-   public ParkingPlace parkVehicle(String number) throws Exception
+   public synchronized ParkingPlace parkVehicle(String number) throws Exception
    {
    	   if(isVehicleParked(number))
    	   {
@@ -38,12 +35,9 @@ public class ParkingArea {
 	   parkingPlace.setFloorNo(floor.getFloorNo());
 	   if(parkingPlace.isFree())
 	   {
-		    synchronized (parkingPlaceRecord)
-		   {
-			   floor.addParkingPlace(parkingPlace);
+		       floor.addParkingPlace(parkingPlace);
 			   parkingPlaceRecord.put(number,parkingPlace);
-		   }
-		   System.out.println("Registration number "+number+" Allocated slot number: "+parkingPlace.getVehicle().getTicket().getTicketNo());
+		       System.out.println("Registration number "+number+" Allocated slot number: "+parkingPlace.getVehicle().getTicket().getTicketNo());
 	   }
        return parkingPlace;
    }
@@ -73,9 +67,9 @@ public class ParkingArea {
            ParkingPlace parkingPlace=this.parkingPlaceRecord.get(vehicleNumber);
            ParkingFloor parkingFloor=this.parkingFloors[parkingPlace.getFloorNo()];
 		   parkingPlace.setParkingTime(parkingTime);
+		   Vehicle vehicle=parkingPlace.getVehicle();
            parkingFloor.freeSpot(parkingPlace);
-			this.parkingPlaceRecord.remove(vehicleNumber);
-           Vehicle vehicle=parkingPlace.getVehicle();
+		   this.parkingPlaceRecord.remove(vehicleNumber);
            System.out.println("Registration number"+ vehicleNumber+" with Slot Number"+vehicle.getTicket().getTicketNo() +" is free with Charge"+ vehicle.getTicket().getPaidAmount() );
 		   return parkingPlace;
 		}
@@ -94,6 +88,7 @@ public class ParkingArea {
 
 	public void ShowStatus()
 	{
+		System.out.println("Slot No.      Registration No");
 		for(int i=0;i<this.parkingFloors.length;i++)
 		{
            ParkingFloor floor=this.parkingFloors[i];

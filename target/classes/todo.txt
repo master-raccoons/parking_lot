@@ -1,0 +1,3 @@
+#Command Pattern to give a command to be executed
+#multiple entrance and multiple exit
+#multiple entrance accessing the parking area

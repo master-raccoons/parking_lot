@@ -38,6 +38,7 @@ public class ParkingLotStarter
 			cmnds.add("leave KA-01-HH-9999 2");
 			cmnds.add("park KA-01-BB-0007");
 			cmnds.add("status");
+			cmnds.add("leave KA-01-HH-9999 2");
 			ParkingEntrance entrance=new ParkingEntrance();
 			entrance.setPosition(new Position(0,0));
 			entrance.setFree(false);
@@ -72,14 +73,14 @@ public class ParkingLotStarter
 
 
 		                        };
-System.out.println("exiting the application!!!");
+
 		}
 		catch(Exception ex)
 		{
 		  ex.printStackTrace();
 
 		}
-
+		System.out.println("exiting the application!!!");
 
 	}
 
