@@ -32,11 +32,11 @@ public class ParkingArea {
    	   	   throw new Exception("Duplicate "+number+" found!!!");
        }
    	   ParkingFloor floor=findFloorNo();
-   	   ParkingPlace parkingPlace=new ParkingPlace();
+   	   ParkingPlace parkingPlace=floor.findNearestParkingSpace();
 	   parkingPlace.setNumber(number);
 	   parkingPlace.setType(ParkingType.COMPACT);
 	   parkingPlace.setFloorNo(floor.getFloorNo());
-	   if(!parkingPlace.isFree())
+	   if(parkingPlace.isFree())
 	   {
 		    synchronized (parkingPlaceRecord)
 		   {
@@ -82,5 +82,13 @@ public class ParkingArea {
        throw new Exception("Vehicle with the number "+vehicleNumber+" is not parked here");
 	}
 
+	public ParkingFloor[] getParkingFloors() {
 
+		return parkingFloors;
+	}
+
+	public HashMap<String, ParkingPlace> getParkingPlaceRecord() {
+
+		return parkingPlaceRecord;
+	}
 }

@@ -1,15 +1,13 @@
 package beans;
 
 import constants.ParkingType;
+import interfaces.ParkingSpace;
 
-
-public class ParkingPlace {
+public class ParkingPlace extends ParkingSpace {
 
 	private String number;
-	private boolean free;
 	private Vehicle vehicle;
 	private ParkingType type;
-	private Position position;
     private int floorNo;
     private float parkingTime;
 
@@ -38,10 +36,6 @@ public class ParkingPlace {
 		this.number = number;
 	}
 
-	public void setFree(boolean free) {
-
-		this.free = free;
-	}
 
 	public void setVehicle(Vehicle vehicle) {
 
@@ -58,10 +52,7 @@ public class ParkingPlace {
 		return number;
 	}
 
-	public boolean isFree() {
 
-		return free;
-	}
 
 	public Vehicle getVehicle() {
 
@@ -73,13 +64,5 @@ public class ParkingPlace {
 		return type;
 	}
 
-	public Position getPosition() {
 
-		return position;
-	}
-
-	public void setPosition(Position position) {
-
-		this.position = position;
-	}
 }

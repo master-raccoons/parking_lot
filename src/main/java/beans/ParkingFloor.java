@@ -2,6 +2,7 @@ package beans;
 
 import constants.ParkingType;
 import constants.VehicleType;
+import interfaces.ParkingSpace;
 import javafx.geometry.Pos;
 import services.FareCalculate;
 
@@ -13,7 +14,7 @@ public class ParkingFloor {
 
 	private String floorName;
 	private int floorNo;
-	private final ParkingPlace[][] parkingPlaces;
+	private final ParkingSpace[][] parkingSpaces;
     private final int totalParkingSpace;
     private int occupiedParking=1;
 
@@ -37,9 +38,9 @@ public class ParkingFloor {
 		this.floorNo=floorNo;
 	}
 
-	public ParkingPlace[][] getParkingPlaces() {
+	public ParkingSpace[][] getParkingSpaces() {
 
-		return parkingPlaces;
+		return parkingSpaces;
 	}
 
 	public int getTotalParkingSpace() {
@@ -59,20 +60,32 @@ public class ParkingFloor {
 
 	ParkingFloor(String floorName, int nowOfRows, int noOfCols, int floorNo) {
 		this.floorName = floorName;
-		this.parkingPlaces = new ParkingPlace[nowOfRows][noOfCols];
+		this.parkingSpaces = new ParkingSpace[nowOfRows][noOfCols];
 		this.floorNo=floorNo;
 		totalParkingSpace=noOfCols*nowOfRows;
+		fill(this.parkingSpaces);
 	}
+
+	public  void fill(Object[][] a) {
+		for (int i = 0, len = a.length; i < len; i++)
+		{
+			for (int j = 0, len1 = a[0].length; j < len1; j++)
+			{
+				if(a[i][j]==null)
+				a[i][j]=new ParkingPlace();
+			}
+		}
+	}
+
 
 	public void addParkingPlace(ParkingPlace parkingPlace) throws Exception {
 
 		switch (parkingPlace.getType()) {
 			case COMPACT:
-			    Position pos=findNearestParkingSpace();
-			    String slotNumber=parkingPlace.getFloorNo()+"F-"+pos.getRow()+""+pos.getCol();
+			    String slotNumber=parkingPlace.getFloorNo()+"F-"+parkingPlace.getPosition().getRow()+""+parkingPlace.getPosition().getCol();
                 Vehicle vehicle=new Car(parkingPlace.getNumber(), VehicleType.CAR,new Ticket(slotNumber));
 				parkingPlace.setVehicle(vehicle);
-				placeVehicle(pos,parkingPlace);
+				placeVehicle(parkingPlace);
                 break;
 
 				case LARGE:
@@ -83,51 +96,65 @@ public class ParkingFloor {
 		}
 	}
 
-	private Position findNearestParkingSpace() throws Exception
+	public ParkingPlace findNearestParkingSpace() throws Exception
 	{
          if(occupiedParking <totalParkingSpace)
          {
-	        Position position= FindMinimumDistance();
-            return position;
+	        Position position= findMinimumDistance();
+	         ParkingPlace parkingPlace=(ParkingPlace)this.parkingSpaces[position.getRow()][position.getCol()];
+	         parkingPlace.setPosition(position);
+	         return parkingPlace;
          }
 
 		throw new Exception("No Parking available!!!");
 	}
 
-	 private Position FindMinimumDistance()
+	 private Position findMinimumDistance()
 	{
 
 		int dx[] = { 0,  -1,  0,  1  };
 		int dy[] = { 1,  0,  -1,  0 };
-		Queue<Position> q = new LinkedList<>();
-        Position entryPoint=new Position(0,0);
-		q.add(entryPoint);
-		//mat[x][y] = 0;
-		ParkingPlace arr[][]=this.parkingPlaces;
+		Queue<Position> queue = new LinkedList<>();
+
+        Position entryPoint=null;
+		if(this.parkingSpaces[0][0]!=null && this.parkingSpaces[0][0] instanceof ParkingEntrance)
+		{
+			entryPoint=((ParkingEntrance)this.parkingSpaces[0][0]).getPosition();
+			queue.add(entryPoint);
+		}
+		else
+			{
+				queue.add(new Position(0,0))	;
+			}
         int x,y;
         Position pos=null;
         label:
-		while (!q.isEmpty())
+		while (!queue.isEmpty())
 		{
-			x = q.peek().row;
-			y = q.peek().col;
-			q.remove();
+			x = queue.peek().row;
+			y = queue.peek().col;
+			queue.remove();
+			if (this.parkingSpaces[x][y] == null)
+			{
+				return new Position(x, y);
+			}
 			for(int i = 0; i < 4; i++)
 			{
 				int a = x + dx[i];
 				int b = y + dy[i];
-				if(a==0 && b==0) continue;
+				if(entryPoint!=null && entryPoint.getRow()==a && entryPoint.getCol()==b)
+				 continue;
 				// Checking boundary condition
-				if (a < 0 || a >= this.parkingPlaces.length ||
-				    b >= this.parkingPlaces[0].length || b < 0)
+				if (a < 0 || a >= this.parkingSpaces.length ||
+				    b >= this.parkingSpaces[0].length || b < 0)
 					continue;
 				// If the slot is not visited
-				if (this.parkingPlaces[a][b] == null)
+				if ( this.parkingSpaces[a][b].isFree())
 				{
 					pos= new Position(a, b);
                     break label;
 				}
-				q.add(new Position(a, b));
+				queue.add(new Position(a, b));
 			}
 		}
 		return pos;
@@ -136,18 +163,16 @@ public class ParkingFloor {
 
 
 
-	public void placeVehicle(Position position, ParkingPlace parkingPlace)
+	public void placeVehicle( ParkingPlace parkingPlace)
 	{
-
-			  this.parkingPlaces[position.getRow()][position.getCol()] = parkingPlace;
-			  parkingPlace.setPosition(position);
+		       parkingPlace.setFree(false);
 			  occupiedParking++;
 
 	}
 
 	public void freeSpot(ParkingPlace parkingPlace)
 	{
-        this.parkingPlaces[parkingPlace.getPosition().getRow()][parkingPlace.getPosition().getCol()]=null;
+        this.parkingSpaces[parkingPlace.getPosition().getRow()][parkingPlace.getPosition().getCol()].setFree(true);
 		double charge= FareCalculate.calculateFare(parkingPlace.getParkingTime());
 		parkingPlace.getVehicle().getTicket().setPaidAmount(charge);
 		parkingPlace.getVehicle().getTicket().setUnparkedAt(new Date());

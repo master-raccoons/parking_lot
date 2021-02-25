@@ -1,6 +1,8 @@
 package starter;
 
 import beans.ParkingArea;
+import beans.ParkingEntrance;
+import beans.Position;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -32,6 +34,11 @@ public class ParkingLotStarter
 			cmnds.add("park KA-01-HH-7718");
 			cmnds.add("park KA-01-BB-0022");
 			cmnds.add("park KA-01-BB-0033");
+			cmnds.add("leave KA-01-BB-0033 2");
+			ParkingEntrance entrance=new ParkingEntrance();
+			entrance.setPosition(new Position(0,0));
+			entrance.setFree(false);
+			parkingArea.getParkingFloors()[0].getParkingSpaces()[0][0]=entrance;
 		    for(String cmnd:cmnds)
 		                        {
 		                        	if(cmnd.startsWith("park"))
