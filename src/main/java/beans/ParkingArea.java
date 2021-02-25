@@ -4,6 +4,7 @@ import constants.ParkingConstants;
 import constants.ParkingType;
 import constants.VehicleType;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class ParkingArea {
@@ -13,7 +14,15 @@ public class ParkingArea {
 	public ParkingArea()
 	{
 		parkingFloors=new ParkingFloor[ParkingConstants.NO_OF_FLOORS];
+		this.fill(parkingFloors);
 		parkingPlaceRecord=new HashMap<>();
+	}
+
+	public static void fill(Object[] a) {
+		for (int i = 0, len = a.length; i < len; i++) {
+			ParkingFloor parkingFloor=new ParkingFloor("F"+i,9,1,i);
+			a[i] = parkingFloor;
+		}
 	}
 
    public ParkingPlace parkVehicle(String number) throws Exception
@@ -22,12 +31,11 @@ public class ParkingArea {
    	   {
    	   	   throw new Exception("Duplicate "+number+" found!!!");
        }
-   	   ParkingFloor floor=new ParkingFloor("F 1",15,15,0);
-	   parkingFloors[0]=floor;
+   	   ParkingFloor floor=findFloorNo();
    	   ParkingPlace parkingPlace=new ParkingPlace();
 	   parkingPlace.setNumber(number);
 	   parkingPlace.setType(ParkingType.COMPACT);
-	   parkingPlace.setFloorNo(floor.floorNo);
+	   parkingPlace.setFloorNo(floor.getFloorNo());
 	   if(!parkingPlace.isFree())
 	   {
 		    synchronized (parkingPlaceRecord)
@@ -40,7 +48,19 @@ public class ParkingArea {
        return parkingPlace;
    }
 
-	  private boolean isVehicleParked(String vehicleNumber)
+	private ParkingFloor findFloorNo() throws Exception
+	{
+        for(int i=0;i<this.parkingFloors.length;i++)
+        {
+        	if(this.parkingFloors[i].getOccupiedParking()<this.parkingFloors[i].getTotalParkingSpace())
+        	{
+        		return this.parkingFloors[i];
+	        }
+        }
+       throw new Exception("Sorry!!!! Parking is full");
+	}
+
+	private boolean isVehicleParked(String vehicleNumber)
 	  {
 	      return parkingPlaceRecord.containsKey(vehicleNumber)  ?true:false;
 

@@ -2,8 +2,8 @@ package beans;
 
 public class Position
 {
- private int row;
- private int col;
+ public int row;
+ public int col;
 
 	Position(int row,int col)
 	{
