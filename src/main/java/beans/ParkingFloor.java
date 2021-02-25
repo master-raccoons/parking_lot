@@ -15,8 +15,8 @@ public class ParkingFloor {
 	private int floorNo;
 	private final ParkingPlace[][] parkingPlaces;
     private final int totalParkingSpace;
-    private int occupiedParking;
-	static int  index=0;
+    private int occupiedParking=1;
+
 
 	public String getFloorName() {
 
@@ -64,7 +64,7 @@ public class ParkingFloor {
 		totalParkingSpace=noOfCols*nowOfRows;
 	}
 
-	public void addParkingPlace(ParkingPlace parkingPlace) {
+	public void addParkingPlace(ParkingPlace parkingPlace) throws Exception {
 
 		switch (parkingPlace.getType()) {
 			case COMPACT:
@@ -83,15 +83,15 @@ public class ParkingFloor {
 		}
 	}
 
-	private Position findNearestParkingSpace()
+	private Position findNearestParkingSpace() throws Exception
 	{
-         if(occupiedParking+1 <totalParkingSpace)
+         if(occupiedParking <totalParkingSpace)
          {
 	        Position position= FindMinimumDistance();
             return position;
          }
 
-		return new Position(0,0);
+		throw new Exception("No Parking available!!!");
 	}
 
 	 private Position FindMinimumDistance()
@@ -121,7 +121,7 @@ public class ParkingFloor {
 				if (a < 0 || a >= this.parkingPlaces.length ||
 				    b >= this.parkingPlaces[0].length || b < 0)
 					continue;
-				// If the cell is not visited
+				// If the slot is not visited
 				if (this.parkingPlaces[a][b] == null)
 				{
 					pos= new Position(a, b);

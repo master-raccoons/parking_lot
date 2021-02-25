@@ -29,6 +29,9 @@ public class ParkingLotStarter
 			cmnds.add("park KA-01-HH-7778");
 			cmnds.add("park KA-01-BB-0002");
 			cmnds.add("park KA-01-BB-0003");
+			cmnds.add("park KA-01-HH-7718");
+			cmnds.add("park KA-01-BB-0022");
+			cmnds.add("park KA-01-BB-0033");
 		    for(String cmnd:cmnds)
 		                        {
 		                        	if(cmnd.startsWith("park"))

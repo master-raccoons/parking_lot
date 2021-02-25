@@ -20,7 +20,7 @@ public class ParkingArea {
 
 	public static void fill(Object[] a) {
 		for (int i = 0, len = a.length; i < len; i++) {
-			ParkingFloor parkingFloor=new ParkingFloor("F"+i,9,1,i);
+			ParkingFloor parkingFloor=new ParkingFloor("F"+i,3,3,i);
 			a[i] = parkingFloor;
 		}
 	}
