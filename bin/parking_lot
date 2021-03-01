@@ -15,5 +15,19 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 #   python3 $DIR/../main.py $1
 # - if ruby
 #   ruby $DIR/../main.rb $1
-# 
+#
 # Important: Above commands is just examples, please modify to suit your requirement as necessary
+
+
+if [[ $# -eq 0 ]] ; then
+    echo 'file input is not passed!!!'
+    exit 1
+fi
+
+
+filename=$DIR/../functional_spec/fixtures/$1
+
+#echo $content
+echo "File Path: ${DIR}"
+java -cp $DIR/../target/parking_lot-1.0-SNAPSHOT.jar com.gojek.assignment.starter.ParkingLotStarter "${filename}"
+
